@@ -1,0 +1,17 @@
+header{
+    height: 45px;
+    width: 100px;
+
+}
+.but{
+    width: 200px;
+    height: 200px;
+   background-color: red;
+
+}
+.but > span{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: chartreuse;
+}
