@@ -2,19 +2,22 @@ const webpack = require('webpack')
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin")
 const ExtractCss = new ExtractTextPlugin('../css/[name].css')
-
+var CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
 module.exports = {
-    entry: __dirname + '/src/js/index.js',
+    entry: {
+        index:__dirname + '/src/js/index.js',
+        more:[__dirname + '/src/js/a.js', __dirname + '/src/js/b.js',]
+    },
     output: {
         path: __dirname + "/assets/js",
-        filename: "index.js",
-        // publicPath: '/temp/'
+        filename: "[name].js",
+        publicPath: '/temp/'
     },
     devServer: {
         contentBase:__dirname,
         host:'localhost',
+        // compress: true,
         port: 9000
-
     },
     module: {
         rules: [
@@ -54,7 +57,13 @@ module.exports = {
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
+        /**
+         * 拣出css
+         */
         ExtractCss,
+        /**
+         * 插入HTML依赖
+         */
         new HtmlWebpackPlugin({
             title: 'My App',
             filename: '../index.html',
@@ -63,12 +72,32 @@ module.exports = {
             info:'WebPack'
             // info:'我是传入模板的一句话 !',
         }),
+        /**
+         * 压缩操作
+         */
         new webpack.optimize.UglifyJsPlugin({
             compress:{
                 warnings:false
             }
+        }),
+        /**
+         * 代理服务
+         */
+        // new webpack.ProvidePlugin({
+        //     $: 'jquery',
+        //     jQuery: 'jquery'
+        // })
+        /**
+         * 共享插件块
+         */
+        // new CommonsChunkPlugin("commons", "commons.js")
+        new CommonsChunkPlugin({
+            names:['a','b']
         })
-    ]
+
+    ],
+    externals:{
+        jquery:"https://cdn.bootcss.com/jquery/3.2.1/jquery.js"
+    }
 
 };
-console.log(__dirname);
