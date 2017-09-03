@@ -62,6 +62,11 @@ module.exports = {
             inject:'body',
             info:'WebPack'
             // info:'我是传入模板的一句话 !',
+        }),
+        new webpack.optimize.UglifyJsPlugin({
+            compress:{
+                warnings:false
+            }
         })
     ]
 
