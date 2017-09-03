@@ -1,14 +1,14 @@
 const webpack = require('webpack')
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin")
 const ExtractCss = new ExtractTextPlugin('../css/[name].css')
-const path = require('path')
 
 module.exports = {
     entry: __dirname + '/src/js/index.js',
     output: {
         path: __dirname + "/assets/js",
         filename: "index.js",
-        publicPath: '/temp/'
+        // publicPath: '/temp/'
     },
     devServer: {
         contentBase:__dirname,
@@ -54,7 +54,16 @@ module.exports = {
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
-        ExtractCss
+        ExtractCss,
+        new HtmlWebpackPlugin({
+            title: 'My App',
+            filename: '../index.html',
+            template:__dirname + '/src/tpl/demo.ejs',
+            inject:'body',
+            info:'WebPack'
+            // info:'我是传入模板的一句话 !',
+        })
     ]
 
 };
+console.log(__dirname);
