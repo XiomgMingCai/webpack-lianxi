@@ -1,4 +1,5 @@
 const webpack = require('webpack')
+const path = require('path')
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin")
 const ExtractCss = new ExtractTextPlugin('../css/[name].css')
@@ -51,6 +52,11 @@ module.exports = {
                 query: {
                     presets: ['es2015']
                 }
+            },
+            {
+                test:/\.png$/,
+                // loader:"file-loader?limit=1024&name=assets/images/[hash:8].[name].[ext]"
+                loader:"url-loader?limit=1024&name=assets/images/[hash:8].[name].[ext]"
             }
         ],
 
@@ -98,6 +104,14 @@ module.exports = {
     ],
     externals:{
         jquery:"https://cdn.bootcss.com/jquery/3.2.1/jquery.js"
+    },
+    resolve: {
+
     }
 
 };
+// console.log('process.env.NODE_ENV',process.env.NODE_ENV);
+
+if (process.env.NODE_ENV === 'dev') {
+    console.log("开发环境");
+}
